@@ -17,5 +17,5 @@ type Route struct {
 type Device struct {
 	name string
 	interfaces []Interface
-	routes []Route
+	route Route
 }
