@@ -1,0 +1,71 @@
+*TCP/IP Networking*
+
+TCP stands for Transmission Control Protocol, it is used to send packets across the internet while guaranteeing the integrity of the data being sent. It establishes an end-to-end delivery and then chunks data into smaller packets.
+
+It has 4 layers between the user and the internet:
+	- User
+	- Application layer
+	- Transport layer
+	- Network layer 
+	- Link layer
+	- Internet
+
+- The TCP corresponds to the Transport layer, it is the protocol which ensures that there is a connection being established between source and destination.
+- The IP (Internet Protocol) corresponds to the Network layer, it is a unique identifier corresponding to a device in a given network. It has two parts:
+	- The host (the device it belongs to)
+	- The network it belongs to
+	
+There are two types of IPs:
+	- IPv4, defines IP addresses as a 32-bit number (00000000.00000000.00000000.00000000)
+	- IPv6, defines IP addresses a 128-bit number because of the growth of the internet and the depletion of IPv4 addresses
+	
+There is also a distinction between Private/Public addresses:
+	- Public address: Can be accessed directly over the internet and is assigned to a router via the internet provider. It is what helps one access the internet from within a network.
+	- Private address: The address assigned to the device by the router
+	
+When a network is connected to the internet, it cannot use an IP address from the reserved private IP addresses list. These are those ranges:
+	- 192.168.0.0 - 192.168.255.255
+	- 172.16.0.0 - 172.31.255.255
+	- 10.0.0.0 - 10.255.255.255
+	
+	
+TCP/IP networks use sub-masking to separate them (network address/host address). It is a 32-bit (4 bytes) address which distinguishes both. It works as follows:
+	When applied to the IP address of the host, the mask reveals which portion of the IP address is the network address.
+	An example:
+	Interface A1 has the following properties:
+		IP address | 104.198.241.125
+		Mask       | 255.255.255.128
+	
+	Let's first convert the mask to its binary form:
+		Mask	   | 255.255.255.128
+		Binary	   | 11111111.11111111.11111111.10000000
+The bits that are set to 1 represent the network address, the remaining set to 0 represent the host address.
+
+And now converting the IP to binary:
+	IP			   | 01101000.11000110.11110001.01111101
+	Mask		   | 11111111.11111111.11111111.10000000
+	
+Now, in order to find the network address, we apply a bitwise AND operation:
+	This comes down to comparing both bits in the IP and the mask, if both are 1 the bit is set to 1, otherwise it is set to 0.
+	
+	Network address	| 01101000.11000110.11110001.00000000
+	In decimal		| 104.198.241.0
+	
+In order to determine the range of host addresses, we shall base ourselves on the last 7 bits that are set to 0, as such the range here is 0000000-1111111, or 0-127
+Which means that the possible range of IP addresses for the network is 104.198.241.0-104.198.241.127, except that both extremities are reserved:
+	.0 is reserved to refer to the network address
+	.127 is reserved to the broadcast address, it is used to send packets to all the hosts in the network
+So the real range becomes IP address 104.198.241.1-104.198.241.126
+
+
+Now, the mask can also be represented via CIDR (Classless Inter-Domain Routing) notation. It represents the mask by a \, followed by the number of bits used to represent the network address.
+So for instance, the mask above (255.255.255.128) becomes \25, which means 25/32 bits are being used for the network address.
+
+
+Switch devices: A switch connects multiple devices together in a single network. Unlike a router, however, the switch does not have any interfaces of its own. It only distributes packets to its local network and cannot talk directly to a network outside of its own.
+
+Routers: A router connects multiple NETWORKS together, it has an interface per network it connects. Since it separates different networks, the range of possible IPs cannot overlap with the range of its own interfaces, otherwise it would imply that both interfaces are on the same network.
+
+Routing tables: A routing table is a data table stored in a router/network host that lists the routes to particular network destinations. It consists of 2 elements:
+	- Destination (first field): A network address on which a host is the end target of the packets. If set to default, it used the next hop address to send packets to without specifying a destination.
+	- Next hop (second field): Refers to the IP address of the next closest router a packet can go through

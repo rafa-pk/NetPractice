@@ -1,0 +1,49 @@
+LAN 4
+
+device 1: Host A
+interface: A1
+    ip: 116.198.14.2
+    mask: 255.255.255.0
+    connectedTo: R11
+route:
+    destination: 0.0.0.0
+    mask: /0
+    gateway: 0.0.0.0
+
+device 2: Router R1
+interface: R11
+    ip: 116.198.14.1
+    mask: 255.255.255.0
+    connectedTo: A1
+interface: R12
+    ip: 116.198.14.254
+    mask: 255.255.255.0
+    connectedTo: R21
+route:
+    destination: 0.0.0.0
+    mask: /0
+    gateway: 0.0.0.0
+
+device 3: Router R2
+interface: R21
+    ip: 116.198.14.149
+    mask: 255.255.255.0
+    connectedTo: R12
+interface: R22
+    ip: 116.198.14.252 
+    mask: 255.255.255.0
+    connectedTo: C1
+route:
+    destination: 0.0.0.0
+    mask: /0
+    gateway: 0.0.0.0
+
+device 4: Host C
+interface: C1
+    ip: 116.198.14.1
+    mask: 255.255.255.0
+    connectedTo: R22
+route:
+    destination: 0.0.0.0
+    mask: /0
+    gateway: 0.0.0.0
